@@ -6,7 +6,7 @@
 Choco-Install -PackageName meteor
 
 # Since PATH has changed, we'll reload so the current shell can use it.
-Update-SessionEnvironment
+RefreshEnv
 
 # Prefetch the recent Meteor releases
 meteor update --release 2.0
@@ -25,11 +25,15 @@ meteor update --release 1.8.1
 meteor update --release 1.8.0
 
 # Copy the meteor data to `All Users\AppData`
-robocopy "C:\Users\builderadmin.testbuilder1\AppData\Local\.meteor" "C:\Users\All Users\AppData\Local\.meteor" /MIR /SEC /XJD /R:5 /W:5 /MT:32 /V /NP
+robocopy "$env:LOCALAPPDATA\.meteor" "C:\Users\All Users\AppData\Local\.meteor" /MIR /SEC /XJD /R:5 /W:5 /MT:32 /V /NP
 
 # Update the permissions on the copied files so all users can execute and modify them
 # Since PowerShell assigns meaning to the `(` and `)`, escape with ` (backtick)
-icacls "C:\Users\All Users\AppData\Local\.meteor" /grant ("All"+":(OI)(CI)F") /t /c
+icacls "C:\Users\All Users\AppData\Local\.meteor" /grant ("Everyone"+":(OI)(CI)F") /t /c
 
 # Add the new Meteor installation into the PATH for all users. 
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v Path /t REG_EXPAND_SZ /d "%path%;C:\Users\All Users\AppData\Local\.meteor\"
+$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+$newpath = "$oldpath;C:\Users\All Users\AppData\Local\.meteor"
+Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value $newPath
+
+# The path only takes effect after logging out and back in
