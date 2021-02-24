@@ -10,7 +10,7 @@ RefreshEnv
 
 # Prefetch the recent Meteor releases
 meteor update --release 2.0
-meteor update --release 1.21.12
+meteor update --release 1.12
 meteor update --release 1.11
 meteor update --release 1.10.3
 meteor update --release 1.10.2
