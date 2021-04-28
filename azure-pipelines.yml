@@ -19,7 +19,8 @@ stages:
 
     steps:
     - script: |
-        more \C\Users\AzDevOps\.Azure\AzureRmContext.json
+        ls -la /
+        cat /C/Users/AzDevOps/.Azure/AzureRmContext.json
       displayName: Get file contents
     - powershell: |
         Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
