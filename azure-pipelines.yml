@@ -11,7 +11,7 @@ stages:
 - stage: Build
   displayName: Build stage
   pool: 
-    image: vs2017-win2016
+    image: windows-1809
   jobs:
   - job: Build
     workspace:
