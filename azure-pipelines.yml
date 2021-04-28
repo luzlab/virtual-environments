@@ -9,9 +9,8 @@ variables:
 
 jobs:
 - job: Build
-  displayName: Build
   pool: 
-    image: windows-latest
+    image: 'windows-latest'
   steps:
   - task: AzurePowerShell@5
     inputs:
