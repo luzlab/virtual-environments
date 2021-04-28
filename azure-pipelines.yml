@@ -18,8 +18,8 @@ stages:
       image: windows-latest
 
     steps:
-    - powershell: |
-        Get-Content C:\Users\AzDevOps\.Azure\AzureRmContext.json
+    - script: |
+        more \C\Users\AzDevOps\.Azure\AzureRmContext.json
       displayName: Get file contents
     - powershell: |
         Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
