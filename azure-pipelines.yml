@@ -14,7 +14,8 @@ stages:
     workspace:
       clean: all
     displayName: Build
-    pool: windows-latest
+    pool: 
+      image: windows-latest
 
     steps:
     - powershell: |
