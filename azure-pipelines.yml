@@ -18,13 +18,13 @@ stages:
       image: windows-latest
 
     steps:
-    - script: |
-        ls -la /
-        cat /C/Users/AzDevOps/.Azure/AzureRmContext.json
-      displayName: Get file contents
-    - powershell: |
-        Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
-        Uninstall-AzureRm
-        Import-Module .\helpers\GenerateResourcesAndImage.ps1
-        GenerateResourcesAndImage -AzureClientId $(AZURECLIENTID) -AzureClientSecret $(AzureClientSecret) -AzureTenantId $(AzureTenantId) -SubscriptionId ca9a7991-a1c8-4951-a321-11e7c1ffc279 -ImageGenerationRepositoryRoot "$pwd" -ImageType windows2019 -AzureLocation "west US" -ResourceGroupName gs3-build-agent-images
+    - task: AzurePowerShell@5
+      inputs:
+        azureSubscription: test-azurerm
+        scriptType: inlineScript
+        inline:
+            Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
+            Uninstall-AzureRm
+            Import-Module .\helpers\GenerateResourcesAndImage.ps1
+            GenerateResourcesAndImage -AzureClientId $(AZURECLIENTID) -AzureClientSecret $(AzureClientSecret) -AzureTenantId $(AzureTenantId) -SubscriptionId ca9a7991-a1c8-4951-a321-11e7c1ffc279 -ImageGenerationRepositoryRoot "$pwd" -ImageType windows2019 -AzureLocation "west US" -ResourceGroupName gs3-build-agent-images
       displayName: build resources
